@@ -1,0 +1,18 @@
+{% if game_board %}
+<table style="width:25%" border="10">
+  
+    {% for i in outer %}
+    <tr>
+	{% for j in inner %}
+          <th> {{ game_board[i][j] }} </th>
+	  {% endfor %}
+     </tr>
+    {% endfor %}
+</table>
+{% else %}
+    <p>Ya messed up</p>
+{% endif %}
+
+{% if new_g %}
+    <p>your number is {{ new_g }} </p>
+{% endif %}

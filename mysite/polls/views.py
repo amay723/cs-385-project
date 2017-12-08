@@ -18,7 +18,7 @@ def index(request):
     number = 2
 
     global grid
-    grid = [["." for i in range(3)] for j in range(3)]
+    grid = [["_" for i in range(3)] for j in range(3)]
 
     inner = [0, 1, 2]
     outer = [0, 1, 2]
@@ -49,51 +49,51 @@ def detail(request, sector_id):
     return render(request, 'polls/index.html', context)
     
 
-def done(grid):
+def done():
 
-    if grid[0][1] == '0' and grid[0][0] == '0' and grid[0][2] == '0':
+    if grid[0][1] == 'O' and grid[0][0] == 'O' and grid[0][2] == 'O':
         return True
     elif grid[0][1] == 'X' and grid[0][0] == 'X' and grid[0][2] == 'X':
         return True
     # Top Row win cond
 
-    elif grid[1][0] == '0' and grid[1][1] == '0' and grid[1][2] == '0':
+    elif grid[1][0] == 'O' and grid[1][1] == 'O' and grid[1][2] == 'O':
         return True
     elif grid[1][0] == 'X' and grid[1][1] == 'X' and grid[1][2] == 'X':
         return True
     # Mid Row win cond
 
-    elif grid[2][0] == '0' and grid[2][1] == '0' and grid[2][2] == '0':
+    elif grid[2][0] == 'O' and grid[2][1] == 'O' and grid[2][2] == 'O':
         return True
     elif grid[2][0] == 'X' and grid[2][1] == 'X' and grid[2][2] == 'X':
         return True
     # Bottom Row win cond
 
-    elif grid[0][1] == '0' and grid [1][1] == '0' and grid[2][1] == '0':
+    elif grid[0][1] == 'O' and grid [1][1] == 'O' and grid[2][1] == 'O':
         return True
     elif grid[0][1] == 'X' and grid [1][1] == 'X' and grid[2][1] == 'X':
         return True
     # Mid down win cond
 
-    elif grid[0][0] == '0' and grid[1][1] == '0' and grid[2][2] == '0':
+    elif grid[0][0] == 'O' and grid[1][1] == 'O' and grid[2][2] == 'O':
         return True
     elif grid[0][0] == 'X' and grid[1][1] == 'X' and grid[2][2] == 'X':
         return True
     # Diagonal Right
 
-    elif grid[2][0] == '0' and grid[1][1] == '0' and grid[0][2] == '0':
+    elif grid[2][0] == 'O' and grid[1][1] == 'O' and grid[0][2] == 'O':
         return True
     elif grid[2][0] == 'X' and grid[1][1] == 'X' and grid[0][2] == 'X':
         return True
     # Diagonal Left
 
-    elif grid[0][2] == '0' and grid[1][2] == '0' and grid[2][2] == '0':
+    elif grid[0][2] == 'O' and grid[1][2] == 'O' and grid[2][2] == 'O':
         return True
     elif grid[0][2] == 'X' and grid[1][2] == 'X' and grid[2][2] == 'X':
         return True
     # Left Side Vertical
 
-    elif grid[0][0] == '0' and grid[1][0] == '0' and grid[2][0] == '0':
+    elif grid[0][0] == 'O' and grid[1][0] == 'O' and grid[2][0] == 'O':
         return True
     elif grid[0][0] == 'X' and grid[1][0] == 'X' and grid[2][0] == 'X':
         return True
@@ -110,46 +110,99 @@ def move(request, sector_id):
     global grid
     global player
 
+    if not checksector(sector_id):
+
+        newgrid = []
+        for i in range(0,3):
+            for j in range(0,3):
+                newgrid.append(grid[i][j])
+
+        context = {
+            'game_board': newgrid,
+            'errmessage': "Invalid move",
+            'player': player
+            }
+
+        return render(request, 'polls/index.html', context)
+
+
+
     if player == "X":
         if sector == "1":
             grid[0][0] = 'X'
+            if done():
+                return win(request)
         elif sector == "2":
             grid[0][1] = 'X'
+            if done():
+                return win(request)
         elif sector == "3":
             grid[0][2] = 'X'
+            if done():
+                return win(request)
         elif sector == "4":
             grid[1][0] = 'X'
+            if done():
+                return win(request)
         elif sector == "5":
             grid[1][1] = 'X'
+            if done():
+                return win(request)
         elif sector == "6":
             grid[1][2] = 'X'
+            if done():
+                return win(request)
         elif sector == "7":
             grid[2][0] = 'X'
+            if done():
+                return win(request)
         elif sector == "8":
             grid[2][1] = 'X'
+            if done():
+                return win(request)
         elif sector == "9":
-            grid[2][2] = "X"
-        player = "O"
+            grid[2][2] = 'X'
+            if done():
+                return win(request)
+        player = 'O'
     elif player == "O":
         if sector == "1":
             grid[0][0] = 'O'
+            if done():
+                return win(request)
         elif sector == "2":
             grid[0][1] = 'O'
+            if done():
+                return win(request)
         elif sector == "3":
             grid[0][2] = 'O'
+            if done():
+                return win(request)
         elif sector == "4":
             grid[1][0] = 'O'
+            if done():
+                return win(request)
         elif sector == "5":
             grid[1][1] = 'O'
+            if done():
+                return win(request)
         elif sector == "6":
             grid[1][2] = 'O'
+            if done():
+                return win(request)
         elif sector == "7":
             grid[2][0] = 'O'
+            if done():
+                return win(request)
         elif sector == "8":
             grid[2][1] = 'O'
+            if done():
+                return win(request)
         elif sector == "9":
-            grid[2][2] = "O"
-        player = "X"
+            grid[2][2] = 'O'
+            if done():
+                return win(request)
+        player = 'X'
             
     
     inner = [0, 1, 2]
@@ -165,6 +218,44 @@ def move(request, sector_id):
         'inner': inner,
         'outer': outer,
         'lastSector': sector,
+        'player': player
+    }
+
+    return render(request, 'polls/index.html', context)
+
+def checksector(sector_id):
+
+    if sector_id == "1" and (grid[0][0] == "X" or grid[0][0] == "O"):
+        return False
+    elif sector_id == "2" and (grid[0][1] =="X" or grid[0][1] == "O"):
+        return False
+    elif sector_id == "3" and (grid[0][2] =="X" or grid[0][2] == "O"):
+        return False
+    elif sector_id == "4" and (grid[1][0] =="X" or grid[1][0] == "O"):
+        return False
+    elif sector_id == "5" and (grid[1][1] =="X" or grid[1][1] == "O"):
+        return False
+    elif sector_id == "6" and (grid[1][2] =="X" or grid[1][2] == "O"):
+        return False
+    elif sector_id == "7" and (grid[2][0] =="X" or grid[2][0] == "O"):
+        return False
+    elif sector_id == "8" and (grid[2][1] =='X' or grid[2][1] == 'O'):
+        return False
+    elif sector_id == "9" and (grid[2][2] =='X' or grid[2][2] == 'O'):
+        return False
+
+    return True
+
+def win(request):
+    
+    newgrid = []
+    for i in range(0,3):
+        for j in range(0,3):
+            newgrid.append(grid[i][j])
+
+    context = {
+        'game_board': newgrid,
+        'win': True,
         'player': player
     }
 

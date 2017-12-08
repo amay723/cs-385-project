@@ -9,12 +9,16 @@ th, td {
 
 <h1>Welcome to Tic-Tac-Toe</h1>
 
+<a href="/polls">refresh</a>
+
+</br>
+
 {% if errmessage %}
 <h3> Error: {{ errmessage }} </h3>
 {% endif %}
 
 {% if win %}
-<h2>Player {{ player }} Wins! <a href="/polls">Play again?</a></h2>
+<h2> {{ win }} <a href="/polls/new">Play again?</a></h2>
 {% endif %}
 
 Player {{ player }} turn

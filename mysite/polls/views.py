@@ -10,12 +10,29 @@ from django.shortcuts import render
 number = 1
 player = 'X'
 grid = []
+turncounter = 9
 
 def index(request):
+    newgrid = []
+    for i in range(0,3):
+        for j in range(0,3):
+            newgrid.append(grid[i][j])
+
+    context = {
+        'game_board': newgrid,
+        'player': player
+    }
+
+    return render(request, 'polls/index.html', context)
+
+def new(request):
     #template = loader.get_template('polls/index.html')
 
     global number
     number = 2
+
+    global turncounter
+    turncounter = 9
 
     global grid
     grid = [["_" for i in range(3)] for j in range(3)]
@@ -30,8 +47,6 @@ def index(request):
 
     context = {
         'game_board': newgrid,
-        'inner': inner,
-        'outer': outer,
         'player': player
     }
 
@@ -204,9 +219,25 @@ def move(request, sector_id):
                 return win(request)
         player = 'X'
             
-    
-    inner = [0, 1, 2]
-    outer = [0, 1, 2]
+    global turncounter
+    turncounter = turncounter - 1
+    if turncounter == 0:
+        newgrid = []
+        for i in range(0,3):
+            for j in range(0,3):
+                newgrid.append(grid[i][j])
+
+        context = {
+            'game_board': newgrid,
+            'lastSector': sector,
+            'player': player,
+            'win': "Its a Tie! "
+            }
+        
+        return render(request, 'polls/index.html', context)
+
+
+
 
     newgrid = []
     for i in range(0,3):
@@ -215,8 +246,6 @@ def move(request, sector_id):
 
     context = {
         'game_board': newgrid,
-        'inner': inner,
-        'outer': outer,
         'lastSector': sector,
         'player': player
     }
@@ -252,10 +281,11 @@ def win(request):
     for i in range(0,3):
         for j in range(0,3):
             newgrid.append(grid[i][j])
-
+    
+    
     context = {
         'game_board': newgrid,
-        'win': True,
+        'win': "Player " + player + " won! ",
         'player': player
     }
 

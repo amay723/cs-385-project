@@ -1,6 +1,6 @@
 <style>
 th, td {
-    padding: 5px;
+    padding: 10px;
 }
 </style>
 
@@ -8,6 +8,10 @@ th, td {
 
 
 <h1>Welcome to Tic-Tac-Toe</h1>
+
+<a href="/polls">refresh</a>
+
+</br>
 
 {% if errmessage %}
 <h3> Error: {{ errmessage }} </h3>

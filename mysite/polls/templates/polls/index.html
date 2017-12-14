@@ -1,0 +1,44 @@
+<style>
+th, td {
+    padding: 10px;
+}
+</style>
+
+<title>Tic-Tac-Toe</title>
+
+
+<h1>Welcome to Tic-Tac-Toe</h1>
+
+<a href="/polls">refresh</a>
+
+</br>
+
+{% if errmessage %}
+<h3> Error: {{ errmessage }} </h3>
+{% endif %}
+
+{% if win %}
+<h2> {{ win }} <a href="/polls/new">Play again?</a></h2>
+{% endif %}
+
+Player {{ player }} turn
+{% if game_board %}
+<table style="width:25%" height="height:500%" border="10">
+  
+    {% for thing in game_board %}
+      {% if forloop.first or forloop.counter0 == 3 or forloop.counter0 == 6 %}
+      <tr>
+	{% endif %}
+	<th><a href="/polls/{{ forloop.counter }}">{{ thing }}</a></th>
+	{% if forloop.last or forloop.counter0 == 2 or forloop.counter0 == 5 %}
+	</tr>
+      {% endif %}
+    {% endfor %}
+</table>
+{% else %}
+    <p>Ya messed up</p>
+{% endif %}
+
+{% if new_g %}
+    <p>your number is {{ new_g }} </p>
+{% endif %}
